@@ -88,7 +88,7 @@ static int try_acquire_console_sem(void)
 {
     int retval = -1;
 
-    if(!semaphore_down(&console_sem)) {
+    if(semaphore_down(&console_sem)) {
         retval = 0;
     }
     return retval;
@@ -167,6 +167,7 @@ static void __call_console_driver(unsigned int start, unsigned int end)
         }
     }
 */
+    // 临时用来往串口发送字符串用的函数, 将来要删除, 用上面注释掉的代码来实现这个功能
     serial_puts(&LOG_BUF(start), end - start);
 }
 
@@ -360,6 +361,16 @@ int printk(const char *fmt, ...)
     va_end(args);
 
     return len;
+}
+
+/**
+ * 临时用的, 将来要删除
+ */
+void semaphore_mutex_init(void)
+{
+    mutex_init(&logbuf_lock);
+    semaphore_binary_init(&console_sem);
+    semaphore_up(&console_sem);
 }
 
 #endif

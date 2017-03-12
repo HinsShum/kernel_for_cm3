@@ -16,19 +16,59 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+/* 临时文件, 测试使用互斥量和二值信号量的printk, 将来要重新写 */
 /*---------- includes ----------*/
 #include <kernel/kernel.h>
 #include <kernel/bug.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <plat/FreeRTOSConfig.h>
 #include <mach/bsp_usart.h>
 
+/*---------- functions ----------*/
+extern void semaphore_mutex_init(void);
+static int task_init(void)
+{
+    semaphore_mutex_init();
+    
+    return 0;
+}
 
+static void deamon_task(void *private)
+{
+    unsigned int i = 0;
+
+    task_init();
+
+    while(1){
+        vTaskDelay(configTICK_RATE_HZ);     /* 2s */
+        printk("HinsShum, second: %ds\n", i++);
+    }
+}
+
+static inline void deamon_task_creat(void)
+{
+    xTaskCreate(deamon_task,
+                "deamon",
+                configMINIMAL_STACK_SIZE << 1,
+                NULL,
+                1,
+                NULL);
+}
+
+/**
+ * main() - C环境入口函数
+ */
 int __noreturn main(void)
 {
     bsp_usart1_init();
-    printk(KERN_ERR "System start...\n");
-    while(1) {
-        for(int volatile i = 0; i < 0xFFFFFF; i++);
-        printk(KERN_ERR "HinsShum\n");
-    }
+
+    deamon_task_creat();
+
+    /**
+     * 启动任务调度
+     */
+    vTaskStartScheduler();
+    
+    while(1);
 }

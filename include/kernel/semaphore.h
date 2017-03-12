@@ -44,6 +44,16 @@ static inline void semaphore_init(semaphore_t *semaphore, unsigned int max_count
 }
 
 /**
+ * semaphore_binary_init() - 创建二值信号量
+ *
+ * @param semaphore: 使用DECLARE_SEMAPHORE声明值的地址
+ */
+static inline void semaphore_binary_init(semaphore_t *semaphore)
+{
+    *semaphore = xSemaphoreCreateBinary();
+}
+
+/**
  * semaphore_down() - 获取信号量，不等待
  *
  * @param semaphore: 获取DECLARE_SEMAPHORE声明的变量
