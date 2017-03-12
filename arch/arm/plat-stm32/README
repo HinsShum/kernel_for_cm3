@@ -1,0 +1,8 @@
+	FreeRTOS release 8.2.3（程序使用的实时操作系统）
+
+/arch/arm/plat-cm3/port.c
+/arch/arm/plat-cm3/include/plat/portmacro.h
+这两个文件是FreeRTOS基于Cortex-CM3内核的移植文件，与硬件相关性较强。
+
+/arch/arm/plat-cm3/include/plat/FreeRTOSConfig.h
+这个文件是FreeRTOS的配置宏
