@@ -28,7 +28,6 @@
 #define USART1_BAUDRATE               115200
 
 /* extern function */
-extern int32_t bsp_usart1_init(void);
 extern unsigned int serial_puts(const char *s, unsigned int len);
 
 #endif /* end for bsp_usart.h */

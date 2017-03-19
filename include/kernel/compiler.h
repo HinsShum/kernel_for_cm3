@@ -31,5 +31,7 @@
  * attribute
  */
 #define __noreturn      __attribute__((noreturn))
+#define __used          __attribute__((used))
+#define __section(s)    __attribute__((section(#s)))
 
 #endif /* __COMPILER_H */

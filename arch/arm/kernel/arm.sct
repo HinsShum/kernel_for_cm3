@@ -11,12 +11,19 @@ LR_IROM1 0x08000000 0x00080000  {    ; load region size_region
   data 0x20000000 { ; .data
    *(.data)
   }
-  armboot_cmd + 0 { ; .armboot_cmd : command set address
-   *(armboot_cmd)
+  __initcall + 0 { ; initcall
+   ;*(initcall0_init)
+   ;*(initcall1_init)
+   ;*(initcall2_init)
+   *(initcall3_init)
+   ;*(initcall4_init)
+   ;*(initcall5_init)
+   ;*(initcall6_init)
+   ;*(initcall7_init)
   }
   bss + 0 { ; .bss
    *(STACK)
-   *(HEAP)
+   ;*(HEAP)     ; 使用MicroLIB时，不能定义HEAP
    *(.bss)
   }
 }

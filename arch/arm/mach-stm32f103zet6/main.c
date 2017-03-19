@@ -19,6 +19,7 @@
 /* 临时文件, 测试使用互斥量和二值信号量的printk, 将来要重新写 */
 /*---------- includes ----------*/
 #include <kernel/kernel.h>
+#include <kernel/init.h>
 #include <kernel/bug.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -26,10 +27,37 @@
 #include <mach/bsp_usart.h>
 
 /*---------- functions ----------*/
-extern void semaphore_mutex_init(void);
+extern initcall_t Image$$__initcall$$Base[], Image$$__initcall$$Limit[];
+
+/**
+ * do_initcalls() - 调用section(__initcall)中的
+ * 初始化函数进行必要的初始化
+ */
+static void __init do_initcalls(void)
+{
+    initcall_t *fn = NULL;
+
+    for(fn = Image$$__initcall$$Base; fn < Image$$__initcall$$Limit; fn++) {
+        (*fn)();
+    }
+}
+
+/**
+ * do_basic_setup() - 程序中基础的启动代码
+ */
+static void __init do_basic_setup(void)
+{
+    do_initcalls();
+}
+
+/**
+ * task_init() - deamon任务进行必要的初始化
+ *
+ * Returns: 初始化成功返回 0, 否则返回 1.
+ */
 static int task_init(void)
 {
-    semaphore_mutex_init();
+    do_basic_setup();
     
     return 0;
 }
@@ -61,8 +89,6 @@ static inline void deamon_task_creat(void)
  */
 int __noreturn main(void)
 {
-    bsp_usart1_init();
-
     deamon_task_creat();
 
     /**

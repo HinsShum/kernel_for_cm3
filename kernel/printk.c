@@ -22,6 +22,7 @@
 #include <kernel/bug.h>
 #include <kernel/mutex.h>
 #include <kernel/semaphore.h>
+#include <kernel/init.h>
 
 /*---------- marcos ----------*/
 #define CONFIG_LOG_BUF_SHIFT        (9)
@@ -366,11 +367,14 @@ int printk(const char *fmt, ...)
 /**
  * 临时用的, 将来要删除
  */
-void semaphore_mutex_init(void)
+static int __init semaphore_mutex_init(void)
 {
     mutex_init(&logbuf_lock);
     semaphore_binary_init(&console_sem);
     semaphore_up(&console_sem);
+
+    return 0;
 }
+arch_initcall(semaphore_mutex_init);
 
 #endif

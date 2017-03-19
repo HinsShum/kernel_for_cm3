@@ -11,6 +11,7 @@
   */
 /* include header file */
 #include "mach/bsp_usart.h"
+#include <kernel/init.h>
 
 /******************************************************************************/
 /*                            USART1                                          */
@@ -80,7 +81,7 @@ static void bsp_usart1_register_init(void)
   * @param  None
   * @retval successful value of usart1 initialization
   */
-int32_t bsp_usart1_init(void)
+static int __init bsp_usart1_init(void)
 {
     /* initialize usart1 gpio */
     bsp_usart1_gpio_init();
@@ -89,6 +90,7 @@ int32_t bsp_usart1_init(void)
 
     return 0;
 } /* end bsp_usart1_init */
+arch_initcall(bsp_usart1_init);
 
 /**
   * @brief  send a character on serial port
