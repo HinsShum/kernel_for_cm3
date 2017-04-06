@@ -26,8 +26,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <kernel/types.h>
+#include <kernel/compiler.h>
 
 /*---------- marcos ----------*/
+#define ARRAY_SIZE(x)       (sizeof(x) / sizeof((x)[0]) + __must_be_array(x))
+
 /**
  * log level
  */

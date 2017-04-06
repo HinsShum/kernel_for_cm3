@@ -48,7 +48,7 @@ typedef void (*exitcall_t)(void);
 #define arch_initcall(fn)       __define_initcall("3", fn, 3)
 #define subsys_initcall(fn)     __define_initcall("4", fn, 4)
 #define fs_initcall(fn)         __define_initcall("5", fn, 5)
-#define device_initcall(fn)     __define_initcall("6", fn, 6)
+#define module_initcall(fn)     __define_initcall("6", fn, 6)
 #define late_initcall(fn)       __define_initcall("7", fn, 7)
 
 #define __initcall(fn)          device_initcall(fn)

@@ -133,7 +133,7 @@ static inline int can_use_console(void)
  * This gets called with the 'logbuf_lock' mutexlock held. It
  * should return with 'lockbuf_lock' released.
  */
-static int acquire_console_semapgore_for_printk(void)
+static int acquire_console_semaphore_for_printk(void)
 {
     int retval = false;
 
@@ -205,9 +205,9 @@ static void call_console_drivers(unsigned int start, unsigned int end)
     while(cur_index != end) {
         if((msg_level < 0) && ((end - cur_index) > 2) &&
                 LOG_BUF(cur_index + 0) == '<' &&
-                LOG_BUF(cur_index + 1 >= '0') &&
-                LOG_BUF(cur_index + 1 <= '7') &&
-                LOG_BUF(cur_index + 2 == '>')) {
+                LOG_BUF(cur_index + 1) >= '0' &&
+                LOG_BUF(cur_index + 1) <= '7' &&
+                LOG_BUF(cur_index + 2) == '>') {
             msg_level = LOG_BUF(cur_index + 1) - '0';
             cur_index += 3;
             start_print = cur_index;
@@ -323,7 +323,7 @@ int vprintk(const char *fmt, va_list args)
      * will release 'logbuf_lock' regardless of whether it
      * actually gets the semaphore or not.
      */
-    if(acquire_console_semapgore_for_printk()) {
+    if(acquire_console_semaphore_for_printk()) {
         release_console_sem();
     }
 

@@ -29,10 +29,23 @@
 #define prefetch(x)     __builtin_prefetch(x)
 
 /**
+ * Force a compilation error if condition is true, but also
+ * produce a result (of value 0 and type size_t), so the
+ * expression can be used e.g. in a structure initializer (or
+ * where-ever else comma expressions aren't permitted).
+ */
+#define BUILD_BUG_ON_ZERO(e)    (sizeof(struct { char bug[-!!e]; }))
+#define BUILD_BUG_ON_NULL(e)    ((void *)sizeof(struct { char bug[-!!e]; }))
+
+/* &a[0] degrades to a pointer: a different type from an array */
+#define __must_be_array(a)      BUILD_BUG_ON_ZERO(__builtin_types_compatible_p(typeof(a), typeof(&a[0])))
+
+/**
  * attribute
  */
 #define __noreturn      __attribute__((noreturn))
 #define __used          __attribute__((used))
 #define __section(s)    __attribute__((section(#s)))
+#define __must_check    __attribute__((warn_unused_result))
 
 #endif /* __COMPILER_H */

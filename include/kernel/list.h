@@ -17,11 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __LIST_H
-#define __LIST_H
+#ifndef _KERNEL_LIST_H
+#define _KERNEL_LIST_H
 
 /*---------- includes ----------*/
 #include <kernel/kernel.h>
+#include <kernel/compiler.h>
 
 /**
  * Simple doubly linked list implementation.
@@ -564,4 +565,4 @@ static inline void list_splice_tail_init(struct list_head *list,
 #define list_safe_reset_next(pos, n, member)                \
     n = list_entry(pos->member.next, typeof(*pos), member)
 
-#endif /* __LIST_H */
+#endif /* _KERNEL_LIST_H */

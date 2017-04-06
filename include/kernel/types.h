@@ -36,4 +36,8 @@ typedef __uint64_t      _uint64_t;
 typedef __kernel_size_t     _size_t;
 typedef __kernel_sszie_t    _ssize_t;
 
+typedef __uint32_t      __kernel_dev_t;
+
+typedef __kernel_dev_t  dev_t;
+
 #endif /* _KERNEL_TYPES_H */
